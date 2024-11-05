@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { AuthContext } from "../Provider/AuthProvider"
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
     const user = useContext(AuthContext)
@@ -19,9 +20,9 @@ const Navbar = () => {
 
                     {
                         !user &&
-                        <li >
+                        <Link to={"/login"} >
                             <div>Login</div>
-                        </li>
+                        </Link>
                     }
                 </ul>
 
