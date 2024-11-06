@@ -1,12 +1,14 @@
 import { useContext } from "react";
 import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const JobDetails = () => {
-    const{user}=useContext(AuthContext)
+    const { user } = useContext(AuthContext)
     console.log(user);
-    const job = useLoaderData() 
-    console.log(job); 
+    const job = useLoaderData()
+    console.log(job);
 
     if (!job) {
         return <div>Job not found</div>;
@@ -17,7 +19,33 @@ const JobDetails = () => {
         min_price,
         description,
         deadline,
+        _id
     } = job;
+
+    const handleFormSubmission = async e => {
+        e.preventDefault()
+        const form = e.target
+        const jobId = _id
+        const price = parseFloat(form.price.value)
+        if (price < parseFloat(min_price))
+            return toast.error('Offer more or at least equal to Minimum Price.')
+        const comment = form.comment.value
+        // const deadline = deadline
+        const email = user?.email
+        const status = 'Pending'
+
+        const bidData = {
+            jobId,
+            price,
+            deadline,
+            comment,
+            job_title,
+            category,
+            email,
+        }
+       console.table(bidData);
+    }
+
     return (
         <div className='flex flex-col md:flex-row justify-around gap-5  items-center min-h-[calc(100vh-306px)] md:max-w-screen-xl mx-auto '>
             {/* Job Details */}
@@ -64,7 +92,7 @@ const JobDetails = () => {
                     Place A Bid
                 </h2>
 
-                <form>
+                <form onSubmit={handleFormSubmission}>
                     <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
                         <div>
                             <label className='text-gray-700 ' htmlFor='price'>
@@ -84,6 +112,7 @@ const JobDetails = () => {
                             </label>
                             <input
                                 id='emailAddress'
+                                placeholder={user?.email}
                                 type='email'
                                 name='email'
                                 disabled
