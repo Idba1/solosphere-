@@ -1,12 +1,12 @@
 const express = require('express')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors')
 require('dotenv').config()
 const port = process.env.PORT || 9000
 
 const app = express()
 const corsoptions = {
-    origin: ['http://localhost:5173/', 'http://localhost:5174/'],
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
     Credential: true,
     optionSuccessStatus: 2000,
 }
@@ -33,10 +33,33 @@ async function run() {
         const jobscollection = client.db('solosphere').collection('jobs')
         const bidscollection = client.db('solosphere').collection('bids')
 
+        //    get all jobs
         app.get('/jobs', async (req, res) => {
             const result = await jobscollection.find().toArray()
             res.send(result)
         })
+
+
+        // get specific job details using job id
+        app.get('/job/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await jobscollection.findOne(query)
+            res.send(result)
+        })
+
+
+        // app.get('/job/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: new ObjectId(id) };
+        //     const result = await jobscollection.findOne(query);
+        //     if (result) {
+        //         res.send(result);
+        //     } else {
+        //         res.status(404).send({ message: 'Job not found' });
+        //     }
+        // })
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
