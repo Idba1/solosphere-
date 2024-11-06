@@ -1,5 +1,6 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import JobCard from '../Job/JobCard';
 
 const TabCategory = () => {
     return (
@@ -16,16 +17,25 @@ const TabCategory = () => {
                     </div>
 
                     <TabPanel>
-                        <h2></h2>
+                        <h2>
+                            <JobCard></JobCard>
+                        </h2>
                     </TabPanel>
                     <TabPanel>
-                        <h2></h2>
+                        <h2>
+                            <JobCard></JobCard>
+                        </h2>
                     </TabPanel>
                     <TabPanel>
-                        <h2>Any content 2</h2>
+                        <h2>
+                            <JobCard></JobCard>
+                        </h2>
                     </TabPanel>
                     <TabPanel>
-                        <h2>Any content 2</h2>
+                        <h2 className='flex gap-5'>
+                            <JobCard></JobCard>
+                            <JobCard></JobCard>
+                        </h2>
                     </TabPanel>
                 </div>
             </Tabs>
