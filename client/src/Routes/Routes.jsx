@@ -4,6 +4,7 @@ import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Registration from "../Pages/Authentication/Register";
 import Login from "../Pages/Authentication/LogIn";
 import Home from "../Pages/Home/Home";
+import JobDetails from "../Pages/Job/JObDetails";
 
 const Routes = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const Routes = createBrowserRouter([
                 {
                     path: '/login',
                     element: <Login></Login>,
+                },
+                {
+                    path: '/job/:id',
+                    element: <JobDetails></JobDetails>,
                 },
             ]
     }
