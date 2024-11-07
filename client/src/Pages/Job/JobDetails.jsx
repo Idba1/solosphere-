@@ -22,11 +22,14 @@ const JobDetails = () => {
         min_price,
         description,
         deadline,
-        _id
-    } = job;
+        _id,
+        buyer_email
+    } = job || {};
 
     const handleFormSubmission = async e => {
         e.preventDefault()
+        if (user?.email === buyer_email)
+            return toast.error('Action not permitted! Cz you are a buyer for this job')
         const form = e.target
         const price = parseFloat(form.price.value)
         if (price < parseFloat(min_price))
@@ -34,8 +37,7 @@ const JobDetails = () => {
         const comment = form.comment.value
         const bidDeadline = startDate;
         const email = user?.email
-        // const status = 'Pending'
-
+        const status = 'Pending'
         const bidData = {
             jobId: _id,
             price,
@@ -44,6 +46,7 @@ const JobDetails = () => {
             job_title,
             category,
             email,
+            buyer_email
         }
         console.table(bidData);
         try {
@@ -55,7 +58,6 @@ const JobDetails = () => {
             toast.success("Bid placed successfully!");
         } catch (err) {
             console.log(err)
-            console.log('Hi, i am error', err.message)
             toast.error("Failed to place bid. Please try again later.");
         }
     }
@@ -86,9 +88,9 @@ const JobDetails = () => {
                     </p>
                     <div className='flex items-center gap-5'>
                         <div>
-                            <p className='mt-2 text-sm  text-gray-600 '>Name: Jhankar Vai.</p>
+                            <p className='mt-2 text-sm  text-gray-600 '>Name: {buyer_email}</p>
                             <p className='mt-2 text-sm  text-gray-600 '>
-                                Email: jhankar@mahbub.com
+                                Email: {buyer_email}
                             </p>
                         </div>
                         <div className='rounded-full object-cover overflow-hidden w-14 h-14'>
