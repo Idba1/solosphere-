@@ -28,19 +28,18 @@ const JobDetails = () => {
     const handleFormSubmission = async e => {
         e.preventDefault()
         const form = e.target
-        const jobId = _id
         const price = parseFloat(form.price.value)
         if (price < parseFloat(min_price))
             return toast.error('Offer more or at least equal to Minimum Price.')
         const comment = form.comment.value
-        const deadline = startDate
+        const bidDeadline = startDate;
         const email = user?.email
-        const status = 'Pending'
+        // const status = 'Pending'
 
         const bidData = {
-            jobId,
+            jobId: _id,
             price,
-            deadline,
+            deadline: bidDeadline,
             comment,
             job_title,
             category,
@@ -53,9 +52,11 @@ const JobDetails = () => {
                 bidData
             )
             console.log(data)
+            toast.success("Bid placed successfully!");
         } catch (err) {
             console.log(err)
             console.log('Hi, i am error', err.message)
+            toast.error("Failed to place bid. Please try again later.");
         }
     }
 
