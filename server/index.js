@@ -47,7 +47,13 @@ async function run() {
             res.send(result)
         })
 
-
+        // Save a bid data in db
+        app.post('/bid', async (req, res) => {
+            const bidData = req.body
+            console.log(bidData);
+            const result = await bidscollection.insertOne(bidData)
+            res.send(result)
+        })
         // app.get('/job/:id', async (req, res) => {
         //     const id = req.params.id;
         //     const query = { _id: new ObjectId(id) };
