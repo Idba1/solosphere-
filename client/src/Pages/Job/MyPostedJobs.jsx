@@ -9,15 +9,16 @@ const MyPostedJobs = () => {
     const [jobs, setJobs] = useState([])
 
     useEffect(() => {
-        const getData = async () => {
-            const { data } = await axios(
-                `${import.meta.env.VITE_API_URL}/jobs/${user?.email}`
-            )
-            setJobs(data)
-        }
+
         getData()
     }, [user])
 
+    const getData = async () => {
+        const { data } = await axios(
+            `${import.meta.env.VITE_API_URL}/jobs/${user?.email}`
+        )
+        setJobs(data)
+    }
 
     const handleDelete = async id => {
         try {
@@ -26,6 +27,7 @@ const MyPostedJobs = () => {
             )
             console.log(data)
             toast.success('Delete Successful')
+            getData()
         } catch (err) {
             console.log(err.message)
             toast.error(err.message)
