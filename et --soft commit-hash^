@@ -1,0 +1,31 @@
+[33m6271875[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m save a bid in DB
+[z33ma1cff26[m save bid
+[33mdfa0fbd[m bidData collected successfully
+[33m874051b[m get specific job details using job id
+[33m93da7f2[m show job details
+[33m42c0391[m static job details page
+[33m2dc7b41[m fatch data using axios
+[33m475a2a9[m show jobs in specific tab based on category, from db filter by category
+[33m2778709[m get jobs collection from DB
+[33m0a04012[m connect mongodb
+[33m59793d3[m Merge branch 'main' of https://github.com/Idba1/solosphere-
+[33mb5c1db2[m env deleted
+[33mbca3e82[m Delete server/.env
+[33me2578cd[m conflickt
+[33m87d2c65[m env file problem fixed
+[33mb96bbb6[m Delete server/.env
+[33mdf08b9d[m setup basic server
+[33m3a7a02b[m add server
+[33mb87316a[m add job card
+[33m3921643[m add react tabs category
+[33mf14fc86[m banner section with swiper js and meraki ui components
+[33m4d4fe9a[m update nav, main
+[33me34cca3[m update login
+[33mc5b6b57[m update registration
+[33md884b9e[m add footer
+[33m6addc0a[m update login and register
+[33m73dc1cc[m login register static page
+[33m0d1b287[m navbar and error page
+[33m7f0a354[m set router, firebase
+[33m48a2661[m tailwind and daisy setup
+[33mcb1f467[m first commit
