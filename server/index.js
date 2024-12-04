@@ -2,7 +2,7 @@ const express = require('express')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors')
 require('dotenv').config()
-const port = process.env.PORT || 9001
+const port = process.env.PORT || 9000
 
 const app = express()
 const corsoptions = {
@@ -121,6 +121,18 @@ async function run() {
             const email = req.params.email
             const query = { 'buyer.email': email }
             const result = await bidscollection.find(query).toArray()
+            res.send(result)
+        })
+
+        // update bid status
+        app.patch('/bid/:id', async (req, res) => {
+            const id = req.params.id
+            const status = req.body
+            const query = { _id: new ObjectId(id) }
+            const updateDoc = {
+                $set: status,
+            }
+            const result = await bidscollection.updateOne(query, updateDoc)
             res.send(result)
         })
         // Send a ping to confirm a successful connection
