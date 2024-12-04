@@ -19,6 +19,12 @@ const BidRequests = () => {
         setBids(data)
     }
     console.log(bids);
+
+    // Handle Status
+    const handleStatus = (id, prevStatus, status) => {
+        console.log(id, prevStatus, status);
+    }
+
     return (
         <section className='container px-4 mx-auto pt-12'>
             <div className='flex items-center gap-x-3'>
@@ -145,6 +151,9 @@ const BidRequests = () => {
                                                 <div className='flex items-center gap-x-6'>
                                                     {/* Accept Button: In Progress */}
                                                     <button
+                                                        onClick={() =>
+                                                            handleStatus(bid._id, bid.status, 'In Progress')
+                                                        }
                                                         disabled={bid.status === 'Complete'}
                                                         className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'
                                                     >
@@ -165,6 +174,9 @@ const BidRequests = () => {
                                                     </button>
                                                     {/* Reject Button */}
                                                     <button
+                                                        // onClick={() =>
+                                                        //     handleStatus(bid._id, bid.status, 'Rejected')
+                                                        // }
                                                         disabled={bid.status === 'Complete'}
                                                         className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none'
                                                     >
