@@ -133,6 +133,7 @@ const MyBids = () => {
                                                 {/* Complete Button */}
                                                 <button
                                                     disabled={bid.status !== 'In Progress'}
+                                                    // onClick={() => handleStatus(bid._id, 'Complete')}
                                                     title='Mark Complete'
                                                     className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none disabled:cursor-not-allowed'
                                                 >
