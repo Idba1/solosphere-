@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -12,6 +12,7 @@ const JobDetails = () => {
     console.log(user);
     const job = useLoaderData()
     console.log(job);
+    const navigate = useNavigate();
 
     if (!job) {
         return <div>Job not found</div>;
@@ -46,7 +47,8 @@ const JobDetails = () => {
             job_title,
             category,
             email,
-            buyer
+            buyer,
+            status
         }
         console.table(bidData);
         try {
@@ -56,6 +58,7 @@ const JobDetails = () => {
             )
             console.log(data)
             toast.success("Bid placed successfully!");
+            navigate('/my-bids')
         } catch (err) {
             console.log(err)
             toast.error("Failed to place bid. Please try again later.");
@@ -68,7 +71,7 @@ const JobDetails = () => {
             <div className='flex-1  px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px]'>
                 <div className='flex items-center justify-between'>
                     <span className='text-sm font-light text-gray-800 '>
-                       Deadline: {new Date(deadline).toLocaleDateString()}
+                        Deadline: {new Date(deadline).toLocaleDateString()}
                     </span>
                     <span className='px-4 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full '>
                         {category}
