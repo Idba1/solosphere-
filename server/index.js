@@ -56,20 +56,7 @@ async function run() {
         const bidscollection = client.db('solosphere').collection('bids')
 
         // jwt generate -json web token
-        // app.post('/jwt', async (req, res) => {
-        //     const email = req.body
-        //     const token = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, {
-        //         expiresIn: '365d',
-        //     })
-        //     // res.send({ token })
-        //     res
-        //         .cookie('token', token, {
-        //             httpOnly: true,
-        //             secure: process.env.NODE_ENV === 'production',
-        //             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-        //         })
-        //         .send({ success: true })
-        // })
+
         app.post('/jwt', async (req, res) => {
             const { email } = req.body;
             const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, {
