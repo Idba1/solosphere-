@@ -2,17 +2,19 @@ const express = require('express')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const port = process.env.PORT || 9000
 
 const app = express()
-const corsoptions = {
+const corsOptions = {
     origin: ['http://localhost:5173', 'http://localhost:5174'],
-    Credential: true,
-    optionSuccessStatus: 2000,
+    // Credential: true,
+    credentials: true,
+    optionSuccessStatus: 200,
 }
 
-app.use(cors(corsoptions))
+app.use(cors(corsOptions));
 app.use(express.json())
 
 const uri = `mongodb+srv://solosphere:iWVwKAPVokeFjwvl@cluster0.kfk05.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -35,13 +37,35 @@ async function run() {
         const bidscollection = client.db('solosphere').collection('bids')
 
         // jwt generate -json web token
+        // app.post('/jwt', async (req, res) => {
+        //     const email = req.body
+        //     const token = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, {
+        //         expiresIn: '365d',
+        //     })
+        //     // res.send({ token })
+        //     res
+        //         .cookie('token', token, {
+        //             httpOnly: true,
+        //             secure: process.env.NODE_ENV === 'production',
+        //             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        //         })
+        //         .send({ success: true })
+        // })
         app.post('/jwt', async (req, res) => {
-            const email = req.body
-            const token = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, {
+            const { email } = req.body;
+            const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '365d',
-            })
-            res.send({token})
-        })
+            });
+
+            res
+                .cookie('token', token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+                })
+                .send({ success: true });
+        });
+
 
         //    get all jobs
         app.get('/jobs', async (req, res) => {
