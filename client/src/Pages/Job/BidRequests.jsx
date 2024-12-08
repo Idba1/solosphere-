@@ -1,24 +1,24 @@
-import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../../Provider/AuthProvider"
 import axios from "axios"
+import useAuth from "../../hooks/useAuth"
+import useAxiosSecure from "../../hooks/useAxiosSecure"
+import { useQuery } from "@tanstack/react-query"
 
 const BidRequests = () => {
+    const { user } = useAuth()
+    const axiosSecure = useAxiosSecure()
 
-    const { user } = useContext(AuthContext)
-    const [bids, setBids] = useState([])
-
-    useEffect(() => {
-
-        getData()
-    }, [user])
+    const { data: bids = [], isLoading, refetch, isError, error } = useQuery({
+        queryFn: () => getData(),
+        queryKey: ['bids'],
+    })
+    console.log(bids);
 
     const getData = async () => {
-        const { data } = await axios(
-            `${import.meta.env.VITE_API_URL}/bid-requests/${user?.email}`
+        const { data } = await axiosSecure(
+            `/bid-requests/${user?.email}`,
         )
-        setBids(data)
+        return data
     }
-    console.log(bids);
 
     // Handle Status
     const handleStatus = async (id, prevStatus, status) => {
@@ -28,6 +28,11 @@ const BidRequests = () => {
         console.log(data);
         getData()
     }
+
+    if (isLoading) return <p>data loading</p>
+    // if (isError || error) {
+    //     console.log(isError, error);
+    // }
 
     return (
         <section className='container px-4 mx-auto pt-12'>
