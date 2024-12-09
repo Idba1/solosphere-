@@ -1,5 +1,18 @@
+import axios from "axios"
+import { useEffect, useState } from "react"
+import JobCard from "../../Components/Job/JobCard"
 
 const AllJobs = () => {
+    const [jobs, setJobs] = useState([])
+
+    // fetch data use axios
+    useEffect(() => {
+        const getData = async () => {
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/jobs`)
+            setJobs(data);
+        }
+        getData()
+    }, [])
     const pages = [1, 2, 3, 4, 5]
     return (
         <div className='container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between'>
@@ -47,9 +60,9 @@ const AllJobs = () => {
                     <button className='btn'>Reset</button>
                 </div>
                 <div className='grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-                    {/* {jobs.map(job => (
-            <JobCard key={job._id} job={job} />
-          ))} */}
+                    {jobs.map(job => (
+                        <JobCard key={job._id} job={job} />
+                    ))}
                 </div>
             </div>
 

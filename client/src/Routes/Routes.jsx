@@ -81,9 +81,9 @@ const Routes = createBrowserRouter([
                 {
                     path: '/jobs',
                     element:
-                        <PrivateRoute>
+                        // <PrivateRoute>
                             <AllJobs></AllJobs>
-                        </PrivateRoute>,
+                        // </PrivateRoute>,
                 },
             ]
     }
