@@ -1,32 +1,41 @@
-import axios from "axios"
 import useAuth from "../../hooks/useAuth"
 import useAxiosSecure from "../../hooks/useAxiosSecure"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import toast from 'react-hot-toast'
 
 const BidRequests = () => {
     const { user } = useAuth()
     const axiosSecure = useAxiosSecure()
-
-    const { data: bids = [], isLoading, refetch, isError, error } = useQuery({
+    const queryClient = useQueryClient()
+    const { data: bids = [], isLoading } = useQuery({
         queryFn: () => getData(),
-        queryKey: ['bids'],
+        queryKey: ['bids', user?.email],
     })
-    console.log(bids);
+    console.log(bids)
+    console.log(isLoading)
 
     const getData = async () => {
-        const { data } = await axiosSecure(
-            `/bid-requests/${user?.email}`,
-        )
+        const { data } = await axiosSecure(`/bid-requests/${user?.email}`)
         return data
     }
 
-    // Handle Status
+    const { mutateAsync } = useMutation({
+        mutationFn: async ({ id, status }) => {
+            const { data } = await axiosSecure.patch(`/bid/${id}`, { status })
+            console.log(data)
+            return data
+        },
+        onSuccess: () => {
+            toast.success('Updated!')
+            queryClient.invalidateQueries({ queryKey: ['bids'] })
+        },
+    })
+
+    // handleStatus
     const handleStatus = async (id, prevStatus, status) => {
-        console.log(id, prevStatus, status);
-        if (prevStatus === status) return console.log("sry");
-        const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}/bid/${id}`, { status })
-        console.log(data);
-        getData()
+        console.log(id, prevStatus, status)
+        if (prevStatus === status) return console.log('Sry vai.. hobena')
+        await mutateAsync({ id, status })
     }
 
     if (isLoading) return <p>data loading</p>
