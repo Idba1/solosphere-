@@ -203,6 +203,18 @@ async function run() {
             const result = await bidscollection.updateOne(query, updateDoc)
             res.send(result)
         })
+
+        // get all jobs data from db for pagination
+        app.get('/all-jobs', async (req, res) => {
+            const result = await jobscollection.find().toArray()
+            res.send(result)
+        })
+
+        // get all jobs data count from db
+        app.get('/jobs-count', async (req, res) => {
+            const count = await jobscollection.countDocuments()
+            res.send({count})
+        })
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
