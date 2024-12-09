@@ -3,17 +3,35 @@ import { useEffect, useState } from "react"
 import JobCard from "../../Components/Job/JobCard"
 
 const AllJobs = () => {
+    const [itemPerPage, setItemPerPage] = useState(4);
     const [jobs, setJobs] = useState([])
+    const [count, setCount] = useState(0);
 
     // fetch data use axios
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/jobs`)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/all-jobs`)
             setJobs(data);
         }
         getData()
     }, [])
-    const pages = [1, 2, 3, 4, 5]
+
+    // fetch data use axios
+    useEffect(() => {
+        const getCount = async () => {
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/jobs-count`)
+            setCount(data.count);
+        }
+        getCount()
+    }, [])
+
+    console.log(count);
+    const numberOfPages = Math.ceil(count / itemPerPage)
+    const pages = [...Array(numberOfPages).keys()].map(
+        element => element + 1
+    )
+    console.log(setItemPerPage);
+
     return (
         <div className='container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between'>
             <div>
