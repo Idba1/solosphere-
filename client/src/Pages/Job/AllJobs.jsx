@@ -5,33 +5,34 @@ import JobCard from "../../Components/Job/JobCard"
 const AllJobs = () => {
     const [itemsPerPage, setItemsPerPage] = useState(4);
     const [currentPage, setCurrentPage] = useState(1)
+    const [filter, setFilter] = useState('')
     const [jobs, setJobs] = useState([])
     const [count, setCount] = useState(0);
 
     // fetch data use axios
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemsPerPage}`)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemsPerPage}&filter=${filter}`)
             setJobs(data);
         }
         getData()
-    }, [currentPage, setCurrentPage])
+    }, [currentPage, filter])
 
     // fetch data use axios
     useEffect(() => {
         const getCount = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/jobs-count`)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/jobs-count?filter=${filter}`)
             setCount(data.count);
         }
         getCount()
-    }, [])
+    }, [filter])
 
     console.log(count);
     const numberOfPages = Math.ceil(count / itemsPerPage)
     const pages = [...Array(numberOfPages).keys()].map(
         element => element + 1
     )
-    console.log(setItemsPerPage);
+    console.log(setItemsPerPage, setFilter);
 
     //  handle pagination button
     const handlePaginationButton = value => {
@@ -44,6 +45,11 @@ const AllJobs = () => {
                 <div className='flex flex-col md:flex-row justify-center items-center gap-5 '>
                     <div>
                         <select
+                            onChange={e => {
+                                setFilter(e.target.value)
+                                setCurrentPage(1)
+                            }}
+                            value={filter}
                             name='category'
                             id='category'
                             className='border p-4 rounded-lg'
