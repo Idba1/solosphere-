@@ -208,14 +208,20 @@ async function run() {
         app.get('/all-jobs', async (req, res) => {
             const size = parseInt(req.query.size)
             const page = parseInt(req.query.page) - 1
+            const filter = req.query.filter
             console.log(size, page)
-            const result = await jobscollection.find().skip(page * size).limit(size).toArray()
+            let query = { }
+            if (filter) query = {category: filter}
+            const result = await jobscollection.find(query).skip(page * size).limit(size).toArray()
             res.send(result)
         })
 
         // get all jobs data count from db
         app.get('/jobs-count', async (req, res) => {
-            const count = await jobscollection.countDocuments()
+            const filter = req.query.filter
+            let query = { }
+            if (filter) query = {category: filter}
+            const count = await jobscollection.countDocuments(query)
             res.send({ count })
         })
         // Send a ping to confirm a successful connection
