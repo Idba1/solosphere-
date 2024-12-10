@@ -6,17 +6,18 @@ const AllJobs = () => {
     const [itemsPerPage, setItemsPerPage] = useState(4);
     const [currentPage, setCurrentPage] = useState(1)
     const [filter, setFilter] = useState('')
+    const [sort, setSort] = useState('')
     const [jobs, setJobs] = useState([])
     const [count, setCount] = useState(0);
 
     // fetch data use axios
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemsPerPage}&filter=${filter}`)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/all-jobs?page=${currentPage}&size=${itemsPerPage}&filter=${filter}&sort=${sort}`)
             setJobs(data);
         }
         getData()
-    }, [currentPage, filter])
+    }, [currentPage, itemsPerPage, filter, sort])
 
     // fetch data use axios
     useEffect(() => {
@@ -32,7 +33,7 @@ const AllJobs = () => {
     const pages = [...Array(numberOfPages).keys()].map(
         element => element + 1
     )
-    console.log(setItemsPerPage, setFilter);
+    console.log(setItemsPerPage, setFilter, setSort);
 
     //  handle pagination button
     const handlePaginationButton = value => {
@@ -78,8 +79,13 @@ const AllJobs = () => {
                     </form>
                     <div>
                         <select
-                            name='category'
-                            id='category'
+                            onChange={e => {
+                                setSort(e.target.value)
+                                setCurrentPage(1)
+                            }}
+                            value={sort}
+                            name='sort'
+                            id='sort'
                             className='border p-4 rounded-md'
                         >
                             <option value=''>Sort By Deadline</option>
